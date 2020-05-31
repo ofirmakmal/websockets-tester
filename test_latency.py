@@ -40,14 +40,15 @@ async def single_test(address, name):
                 else: 
                     same = 'SAME'
 
-            log(name, "%d completed - time: %1.0fms, Sent %d byets, Received %d bytes, %s]" % (i, time, len(message), len(received), same))
-    except:
-        log(name, "Error")
+                log(name, "%d completed - time: %1.0fms, Sent %d bytes, Received %d bytes, %s" % (0, time, len(message), len(received), same))
+            except Exception as e:
+                log(e)
+                log(name, "Error")
 
 
 async def run_test():
-    #host = '127.0.0.1'
-    host = 'mapping_engine'
+    host = '127.0.0.1'
+    #host = 'mapping_engine'
     port = 9002  # int(sys.argv[5])
     websocket_address = "ws://%s:%d/latency/" % (host, port)
 

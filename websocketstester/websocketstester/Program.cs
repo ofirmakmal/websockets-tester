@@ -73,7 +73,7 @@ namespace websocketstester
             }
 
             var childArgs = $"{config.Port} {config.Sleep}";
-            var clients = 5;
+            var clients = 0;
             var processes = new List<Process>();
             var serverProcess = SpawnChild("server", childArgs);
             processes.Add(serverProcess);
