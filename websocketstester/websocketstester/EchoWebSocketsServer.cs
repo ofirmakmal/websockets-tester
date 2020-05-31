@@ -36,6 +36,7 @@ namespace websocketstester
             int messageSize = int.Parse(arr[0]);
             string message = arr[1];
             message = message.PadRight(messageSize, 'R');
+            s = s.Substring(0, messageSize);
             Send(message);
 
             //Send(e.Data);
