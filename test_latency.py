@@ -18,26 +18,29 @@ async def single_test(address, name):
         log(name, "Error connecting to %s" % address)
         return -1
 
-    amount = 1000
-    string_size = 1500
-    message = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(string_size))
+    send_buffers = [1000, 1016, 1017, 1500]
+    receive_buffers = [1000, 1016, 1017, 1500]
+    
+    for send_buf in send_buffers:
+        for receive_buf in receive_buffers:
+            message = '%d,' % receive_buf
+            minus = len(message)
+            message += ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(send_buf - minus))
 
-    try:
-        for i in range(amount):
-            start_time = datetime.now()
-            await ws.write_message(message)
-            received = await ws.read_message()
-            end_time = datetime.now()
+            try:
+                start_time = datetime.now()
+                await ws.write_message(message)
+                received = await ws.read_message()
+                end_time = datetime.now()
 
+                time = (datetime.now() - start_time).total_seconds() * 1000
 
-            time = (datetime.now() - start_time).total_seconds() * 1000
-            
-            if message != received:
-                same = 'DIFF'
-            else: 
-                same = 'SAME'
+                if message != received:
+                    same = 'DIFF'
+                else: 
+                    same = 'SAME'
 
-            log(name, "%d completed - time: %1.0fms [Received %d bytes, %s]" % (i, time, len(received), same))
+            log(name, "%d completed - time: %1.0fms, Sent %d byets, Received %d bytes, %s]" % (i, time, len(message), len(received), same))
     except:
         log(name, "Error")
 
