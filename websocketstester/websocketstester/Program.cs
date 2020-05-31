@@ -73,7 +73,7 @@ namespace websocketstester
             }
 
             var childArgs = $"{config.Port} {config.Sleep}";
-            var clients = 0;
+            var clients = 1;
             var processes = new List<Process>();
             var serverProcess = SpawnChild("server", childArgs);
             processes.Add(serverProcess);
@@ -119,8 +119,9 @@ namespace websocketstester
             {
                 ws.OnMessage += (sender, e) =>
                 {
-                    var ticks = long.Parse(e.Data);
-                    Console.WriteLine($"Response: { Math.Round(TimeSpan.FromTicks(DateTime.Now.Ticks - ticks).TotalMilliseconds, 2)} ms");
+                    var arr = e.Data.Split(",");
+                    var ticks = long.Parse(arr[0]);
+                    Console.WriteLine($"Response: { Math.Round(TimeSpan.FromTicks(DateTime.Now.Ticks - ticks).TotalMilliseconds, 2)} ms. Payload size: {e.Data.Length}");
                 };
 
                 ws.Connect();
@@ -128,7 +129,8 @@ namespace websocketstester
                 {
                     await Task.Delay(config.Sleep);
                     System.Console.WriteLine("Sent!");
-                    ws.Send(DateTime.Now.Ticks.ToString());
+                    var payload = Enumerable.Repeat("X", 2500);
+                    ws.Send($"{DateTime.Now.Ticks},2500,{payload}");
                 }
             }
         }

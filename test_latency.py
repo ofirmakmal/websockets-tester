@@ -18,12 +18,12 @@ async def single_test(address, name):
         log(name, "Error connecting to %s" % address)
         return -1
 
-    send_buffers = [1000, 1016, 1017, 1500]
-    receive_buffers = [1000, 1016, 1017, 1500]
+    send_buffers = [1000, 1016, 1017, 1500, 2500, 5000]
+    receive_buffers = [1000, 1016, 1017, 1500, 2500, 5000]
     
     for send_buf in send_buffers:
         for receive_buf in receive_buffers:
-            message = '%d,' % receive_buf
+            message = '0,' + '%d,' % receive_buf
             minus = len(message)
             message += ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(send_buf - minus))
 

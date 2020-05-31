@@ -33,8 +33,9 @@ namespace websocketstester
         protected override async void OnMessage(MessageEventArgs e)
         {
             string[] arr = e.Data.Split(',');
-            int messageSize = int.Parse(arr[0]);
-            string message = arr[1];
+            long ticks = long.Parse(arr[0]);
+            int messageSize = int.Parse(arr[1]);
+            string message = $"{ticks},{arr[2]}";
             message = message.PadRight(messageSize, 'R');
             message = message.Substring(0, messageSize);
             Send(message);
