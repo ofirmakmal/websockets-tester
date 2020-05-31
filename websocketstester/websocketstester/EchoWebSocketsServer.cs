@@ -32,7 +32,13 @@ namespace websocketstester
 
         protected override async void OnMessage(MessageEventArgs e)
         {
-            Send(e.Data);
+            string[] arr = e.Data.Split(',');
+            int messageSize = int.Parse(arr[0]);
+            string message = arr[1];
+            message = message.PadRight(messageSize, 'R');
+            Send(message);
+
+            //Send(e.Data);
             Console.WriteLine("Message recieved. count:" + counter);
             Interlocked.Increment(ref counter);
         }
