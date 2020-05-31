@@ -29,12 +29,15 @@ async def single_test(address, name):
             received = await ws.read_message()
             end_time = datetime.now()
 
-            if message != received:
-                log('Loopback error')
-                return
 
             time = (datetime.now() - start_time).total_seconds() * 1000
-            log(name, "%d completed - time: %1.0fms" % (i, time))
+            
+            if message != received:
+                same = 'DIFF'
+            else: 
+                same = 'SAME'
+
+            log(name, "%d completed - time: %1.0fms   %s" % (i, time, same))
     except:
         log(name, "Error")
 
