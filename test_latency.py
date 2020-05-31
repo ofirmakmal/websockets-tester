@@ -37,7 +37,7 @@ async def single_test(address, name):
             else: 
                 same = 'SAME'
 
-            log(name, "%d completed - time: %1.0fms   %s" % (i, time, same))
+            log(name, "%d completed - time: %1.0fms [Received %d bytes, %s]" % (i, time, len(received), same))
     except:
         log(name, "Error")
 
