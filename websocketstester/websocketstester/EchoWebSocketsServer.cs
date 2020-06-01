@@ -41,7 +41,7 @@ namespace websocketstester
             Send(message);
 
             //Send(e.Data);
-            Console.WriteLine($"Message recieved. Payload size: {e.Data.Length}, Sent back: {message.Length}, count: {counter}");
+            Console.WriteLine($"Message recieved in {TimeSpan.FromTicks(DateTime.Now.Ticks - ticks).TotalMilliseconds} ms, Payload size: {e.Data.Length}, Sent back: {message.Length}, count: {counter}");
             Interlocked.Increment(ref counter);
         }
     }
