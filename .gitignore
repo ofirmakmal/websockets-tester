@@ -2,3 +2,4 @@ websocketstester/websocketstester/bin
 websocketstester/websocketstester/obj
 venv/
 .vscode/
+out/

@@ -124,13 +124,29 @@ namespace websocketstester
                     Console.WriteLine($"Response: { Math.Round(TimeSpan.FromTicks(DateTime.Now.Ticks - ticks).TotalMilliseconds, 2)} ms. Payload size: {e.Data.Length}");
                 };
 
+                var sendBuffers = new [] {1000, 1016, 1017, 1500, 2500, 5000};
+                var receiveBuffers = new [] {1000, 1016, 1017, 1500, 2500, 5000};
+
                 ws.Connect();
-                while (true)
+
+                var iterations = 100;
+                while (iterations >= 0)
                 {
-                    await Task.Delay(config.Sleep);
-                    System.Console.WriteLine("Sent!");
-                    var payload = Enumerable.Repeat("X", 2500);
-                    ws.Send($"{DateTime.Now.Ticks},2500,{payload}");
+                    for (var i=0; i < sendBuffers.Length; i++)
+                    {
+                        for (var j=0; j < receiveBuffers.Length; j++)
+                        {
+                            await Task.Delay(config.Sleep);
+                            System.Console.WriteLine($"Sent! {sendBuffers[i]}");
+                            var header = $"{DateTime.Now.Ticks},{receiveBuffers[j]},";
+                            var payload = Enumerable.Repeat("X", sendBuffers[i] - header.Length).ToArray();
+                            // Console.WriteLine($"Recieved: {receiveBuffers[j]}");
+                            ws.Send($"{header}{String.Join("", payload)}");
+                            iterations--;
+                        }
+                    }
+                    
+
                 }
             }
         }
